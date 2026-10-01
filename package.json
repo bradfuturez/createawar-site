@@ -1,0 +1,6 @@
+{
+  "name": "createawar-site",
+  "private": true,
+  "type": "module",
+  "dependencies": { "@neondatabase/serverless": "^1.0.0" }
+}
