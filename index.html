@@ -12,31 +12,31 @@
 <meta property="og:url" content="https://createawar.com/">
 <meta property="og:title" content="CreateAWar — Play as a Bio-Hacker">
 <meta property="og:description" content="Create your Army and Heroes. Claim the real-world map. Coming soon to iOS and Android.">
-<meta property="og:image" content="https://createawar.com/img/og.jpg">
+<meta property="og:image" content="https://bradfuturez.github.io/createawar-site/img/og.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="CreateAWar title art: a glowing green DNA helix and a wireframe skull over a bio-lab">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="CreateAWar — Play as a Bio-Hacker">
 <meta name="twitter:description" content="Create your Army and Heroes. Claim the real-world map. Coming soon to iOS and Android.">
-<meta name="twitter:image" content="https://createawar.com/img/og.jpg">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
-<link rel="manifest" href="/site.webmanifest">
-<link rel="preload" as="image" type="image/webp" imagesrcset="/img/hero-top-480.webp 480w, /img/hero-top-768.webp 768w" imagesizes="100vw" media="(max-width: 899px)" fetchpriority="high">
-<link rel="preload" as="image" type="image/webp" href="/img/hero-768.webp" media="(min-width: 900px)" fetchpriority="high">
-<link rel="stylesheet" href="/styles.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"CreateAWar","url":"https://createawar.com/","image":"https://createawar.com/img/og.jpg","description":"A GPS driving territory war on the real-world map. Play as a Bio-Hacker and create your army and heroes.","gamePlatform":["iOS","Android"],"genre":["Strategy","Location-based"]}</script>
+<meta name="twitter:image" content="https://bradfuturez.github.io/createawar-site/img/og.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<link rel="preload" as="image" type="image/webp" imagesrcset="img/hero-top-480.webp 480w, img/hero-top-768.webp 768w" imagesizes="100vw" media="(max-width: 899px)" fetchpriority="high">
+<link rel="preload" as="image" type="image/webp" href="img/hero-768.webp" media="(min-width: 900px)" fetchpriority="high">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"CreateAWar","url":"https://createawar.com/","image":"https://bradfuturez.github.io/createawar-site/img/og.jpg","description":"A GPS driving territory war on the real-world map. Play as a Bio-Hacker and create your army and heroes.","gamePlatform":["iOS","Android"],"genre":["Strategy","Location-based"]}</script>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
 <main>
   <section class="hero">
     <picture class="art">
-      <source media="(min-width: 900px)" type="image/webp" srcset="/img/hero-768.webp">
-      <source media="(min-width: 900px)" srcset="/img/hero-768.jpg">
-      <source type="image/webp" srcset="/img/hero-top-480.webp 480w, /img/hero-top-768.webp 768w" sizes="100vw">
-      <img src="/img/hero-top-768.jpg" width="768" height="515" alt="CreateAWar title art: a glowing green DNA helix, a wireframe skull and a mysterious figure" fetchpriority="high">
+      <source media="(min-width: 900px)" type="image/webp" srcset="img/hero-768.webp">
+      <source media="(min-width: 900px)" srcset="img/hero-768.jpg">
+      <source type="image/webp" srcset="img/hero-top-480.webp 480w, img/hero-top-768.webp 768w" sizes="100vw">
+      <img src="img/hero-top-768.jpg" width="768" height="515" alt="CreateAWar title art: a glowing green DNA helix, a wireframe skull and a mysterious figure" fetchpriority="high">
     </picture>
     <div class="intro">
       <p class="kicker"><span class="dot"></span> Coming soon · iOS &amp; Android</p>
@@ -68,7 +68,7 @@
   <section id="join" class="join">
     <h2>Be first through the lab doors</h2>
     <p>Join the list for early access and launch news. No spam, ever.</p>
-    <form id="signup" action="/api/signup" method="post" novalidate>
+    <form id="signup" action="mailto:bradmarshall2013@gmail.com?subject=CreateAWar%20early%20access" method="post" enctype="text/plain" novalidate>
       <label class="sr" for="email">Email address</label>
       <input id="email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com" required maxlength="254">
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
@@ -83,21 +83,25 @@
 </footer>
 <script>
 (function(){
+  var AUTH='https://ep-flat-bread-b8zqe08j.neonauth.c-14.us-east-1.aws.neon.tech/createawar/auth/token/anonymous';
+  var API='https://ep-flat-bread-b8zqe08j.apirest.c-14.us-east-1.aws.neon.tech/createawar/rest/v1/signups';
   var f=document.getElementById('signup'),m=document.getElementById('msg'),b=f.querySelector('button');
-  if(location.search.indexOf('joined=1')>-1){m.textContent="You're on the list. Welcome, Bio-Hacker.";m.className='msg ok';}
+  function say(t,c){m.textContent=t;m.className='msg '+c;}
   f.addEventListener('submit',function(e){
     e.preventDefault();
-    var email=f.email.value.trim();
-    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){m.textContent='Please enter a valid email address.';m.className='msg err';f.email.focus();return;}
-    b.disabled=true;b.textContent='Sending…';m.textContent='';
-    fetch('/api/signup',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:email,website:f.website.value,source:location.hostname})})
-      .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
-      .then(function(x){
-        if(x.ok){m.textContent="You're on the list. Welcome, Bio-Hacker.";m.className='msg ok';f.reset();}
-        else{m.textContent=(x.j&&x.j.error)||'Something went wrong. Try again.';m.className='msg err';}
-      })
-      .catch(function(){m.textContent='Network error. Try again.';m.className='msg err';})
-      .finally(function(){b.disabled=false;b.textContent='Notify me';});
+    var email=f.email.value.trim().toLowerCase();
+    if(f.website.value){say("You're on the list. Welcome, Bio-Hacker.",'ok');return;}
+    if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)||email.length>254){say('Please enter a valid email address.','err');f.email.focus();return;}
+    b.disabled=true;b.textContent='Sending\u2026';say('','');
+    fetch(AUTH).then(function(r){if(!r.ok)throw 0;return r.json();}).then(function(t){
+      return fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Prefer':'return=minimal','Authorization':'Bearer '+t.token},
+        body:JSON.stringify({email:email,source:location.hostname.slice(0,100),user_agent:navigator.userAgent.slice(0,300)})});
+    }).then(function(r){
+      if(r.ok||r.status===409){say("You're on the list. Welcome, Bio-Hacker.",'ok');f.reset();}
+      else if(r.status===400){say('Please enter a valid email address.','err');}
+      else{throw 0;}
+    }).catch(function(){say('Something went wrong. Please try again in a moment.','err');})
+    .finally(function(){b.disabled=false;b.textContent='Notify me';});
   });
 })();
 </script>
