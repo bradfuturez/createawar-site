@@ -47,6 +47,16 @@
     </div>
   </section>
 
+  <section class="soundtrack" aria-label="Story soundtrack">
+    <div class="vwrap">
+      <video id="story" autoplay muted playsinline preload="metadata" poster="media/story-soundtrack-poster.jpg" width="1280" height="720">
+        <source src="media/story-soundtrack.mp4" type="video/mp4">
+      </video>
+      <button id="unmute" class="unmute" type="button">Tap for sound <span aria-hidden="true">🔊</span></button>
+    </div>
+    <p class="vcap">Listen to the CreateAWar story soundtrack.</p>
+  </section>
+
   <section class="features" aria-label="About the game">
     <article>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
@@ -103,6 +113,25 @@
     }).catch(function(){say('Something went wrong. Please try again in a moment.','err');})
     .finally(function(){b.disabled=false;b.textContent='Notify me';});
   });
+})();
+</script>
+<script>
+(function(){
+  var v=document.getElementById('story'),u=document.getElementById('unmute'),auto=false;
+  if(!v||!u)return;
+  u.addEventListener('click',function(){
+    v.muted=false;v.controls=true;
+    if(v.ended)v.currentTime=0;
+    var p=v.play();if(p&&p.catch)p.catch(function(){});
+    u.hidden=true;
+  });
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(function(es){
+      var e=es[0];
+      if(!e.isIntersecting&&!v.paused){auto=true;v.pause();}
+      else if(e.isIntersecting&&auto&&v.paused&&!v.ended){auto=false;var p=v.play();if(p&&p.catch)p.catch(function(){});}
+    },{threshold:0.25}).observe(v);
+  }
 })();
 </script>
 </body>

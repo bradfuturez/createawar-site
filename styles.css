@@ -37,6 +37,13 @@ button:disabled{opacity:.6;cursor:wait}
 .msg{min-height:1.6em;margin-top:12px;font-size:.95rem}
 .msg.ok{color:var(--g)}.msg.err{color:#ff8a8a}
 .stores{margin-top:18px;color:var(--dim);font-size:.9rem}
+.soundtrack{max-width:1080px;margin:0 auto;padding:8px 20px 36px}
+.vwrap{position:relative;width:100%;aspect-ratio:16/9;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#000;box-shadow:0 0 0 1px rgba(57,255,106,.12),0 0 36px rgba(57,255,106,.25)}
+.vwrap video{display:block;width:100%;height:100%;object-fit:cover;background:#000}
+.unmute{position:absolute;left:50%;top:clamp(10px,3%,22px);transform:translateX(-50%);display:inline-flex;align-items:center;gap:10px;padding:clamp(11px,2.6vw,16px) clamp(20px,5vw,30px);font-size:clamp(.95rem,3.6vw,1.25rem);border-radius:99px;color:#021006;background:var(--g2);box-shadow:0 0 0 4px rgba(3,8,5,.55),0 0 30px rgba(57,255,106,.7);white-space:nowrap;cursor:pointer}
+.unmute:hover,.unmute:focus-visible{background:var(--g);outline:none;box-shadow:0 0 0 4px rgba(3,8,5,.55),0 0 42px rgba(57,255,106,.9)}
+.unmute[hidden]{display:none}
+.vcap{text-align:center;color:var(--dim);font-size:.95rem;margin-top:12px;letter-spacing:.04em}
 footer{text-align:center;padding:26px 16px 36px;color:#5f7d66;font-size:.8rem}
 @media (min-width:640px){form{flex-direction:row}input[type=email]{flex:1}.features{grid-template-columns:repeat(3,1fr)}}
 @media (min-width:900px){
@@ -46,4 +53,5 @@ footer{text-align:center;padding:26px 16px 36px;color:#5f7d66;font-size:.8rem}
   .intro{text-align:left;margin-top:0;padding:0}
   .whisper{margin-left:0}
 }
+@media (min-width:900px){.soundtrack{padding:0 32px 48px}}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
