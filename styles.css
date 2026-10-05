@@ -55,3 +55,12 @@ footer{text-align:center;padding:26px 16px 36px;color:#5f7d66;font-size:.8rem}
 }
 @media (min-width:900px){.soundtrack{padding:0 32px 48px}}
 @media (prefers-reduced-motion:reduce){.dot{animation:none}html{scroll-behavior:auto}}
+
+.evolve{margin:18px auto 0;font-weight:800;font-size:clamp(1.1rem,5vw,1.55rem);letter-spacing:.14em;text-transform:uppercase;line-height:1.3}
+.evolve span[style]{display:inline-block;animation:helix 2.6s ease-in-out infinite;animation-delay:calc(var(--i)*-.16s)}
+.evolve .ba{color:#39ff6a;text-shadow:0 0 10px rgba(57,255,106,.75)}
+.evolve .bt{color:#ff4d6d;text-shadow:0 0 10px rgba(255,77,109,.75)}
+.evolve .bc{color:#3fb4ff;text-shadow:0 0 10px rgba(63,180,255,.75)}
+.evolve .bg{color:#ffd23f;text-shadow:0 0 10px rgba(255,210,63,.7)}
+@keyframes helix{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@media (prefers-reduced-motion:reduce){.evolve span[style]{animation:none}}
