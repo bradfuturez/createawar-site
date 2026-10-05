@@ -25,7 +25,7 @@
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" as="image" type="image/webp" imagesrcset="img/hero-top-480.webp 480w, img/hero-top-768.webp 768w" imagesizes="100vw" media="(max-width: 899px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="img/hero-768.webp" media="(min-width: 900px)" fetchpriority="high">
-<link rel="stylesheet" href="styles.css?v=evolve1">
+<link rel="stylesheet" href="styles.css?v=evolve2">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"CreateAWar","url":"https://createawar.com/","image":"https://bradfuturez.github.io/createawar-site/img/og.jpg","description":"A GPS driving territory war on the real-world map. Play as a Bio-Hacker and create your army and leaders.","gamePlatform":["iOS","Android"],"genre":["Strategy","Location-based"]}</script>
 </head>
 <body>
@@ -43,7 +43,7 @@
       <h1>CreateAWar</h1>
       <p class="tagline">Play as a Bio-Hacker.<br>Create your Army and Leaders.</p>
       <p class="whisper">Cloning saved humanity. Then evolution took over.<br><strong>Who will lead?</strong></p>
-      <p class="evolve" aria-label="Evolve your advantage"><span aria-hidden="true"><span class="ba" style="--i:0">E</span><span class="bt" style="--i:1">v</span><span class="bc" style="--i:2">o</span><span class="bg" style="--i:3">l</span><span class="ba" style="--i:4">v</span><span class="bt" style="--i:5">e</span><span class="sp"> </span><span class="bc" style="--i:6">y</span><span class="bg" style="--i:7">o</span><span class="ba" style="--i:8">u</span><span class="bt" style="--i:9">r</span><span class="sp"> </span><span class="bc" style="--i:10">a</span><span class="bg" style="--i:11">d</span><span class="ba" style="--i:12">v</span><span class="bt" style="--i:13">a</span><span class="bc" style="--i:14">n</span><span class="bg" style="--i:15">t</span><span class="ba" style="--i:16">a</span><span class="bt" style="--i:17">g</span><span class="bc" style="--i:18">e</span></span></p>
+      <p class="evolve"><span class="gl" data-t="Evolve your advantage">Evolve your advantage</span><canvas class="evst" aria-hidden="true"></canvas></p>
       <a class="cta" href="#join">Get early access</a>
     </div>
   </section>
@@ -133,6 +133,22 @@
       else if(e.isIntersecting&&auto&&v.paused&&!v.ended){auto=false;var p=v.play();if(p&&p.catch)p.catch(function(){});}
     },{threshold:0.25}).observe(v);
   }
+})();
+</script>
+<script>
+(function(){
+  var c=document.querySelector('.evst');if(!c)return;
+  var x=c.getContext('2d'),W,H,still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var cols=['255,230,40','255,214,0','240,255,90','255,80,200','90,200,255'];
+  function size(){var r=c.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,2);W=c.width=Math.round(r.width*d);H=c.height=Math.round(r.height*d);}
+  function frame(){x.clearRect(0,0,W,H);var n=Math.round(W/2.5);
+    for(var i=0;i<n;i++){var side=Math.random()<.5,px=side?Math.pow(Math.random(),1.6)*W*.24:W-Math.pow(Math.random(),1.6)*W*.24,py=Math.random()*H;
+      var edge=side?px/(W*.24):(W-px)/(W*.24),a=(1-edge*.85)*(.25+Math.random()*.75);
+      var col=Math.random()<.9?cols[Math.random()*3|0]:cols[3+(Math.random()*2|0)];
+      x.fillStyle='rgba('+col+','+a.toFixed(2)+')';x.fillRect(px,py,2+Math.random()*16,1+Math.random()*2.2);}}
+  var last=0;function loop(t){if(t-last>90){frame();last=t;}requestAnimationFrame(loop);}
+  size();addEventListener('resize',function(){size();frame();});
+  if(still)frame();else requestAnimationFrame(loop);
 })();
 </script>
 </body>
