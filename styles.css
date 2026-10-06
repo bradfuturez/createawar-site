@@ -110,3 +110,12 @@ footer a:hover,footer a:focus-visible{color:var(--g)}
 
 .join .support-link a{color:var(--g);text-decoration:underline;text-underline-offset:3px}
 .join .support-link a:hover,.join .support-link a:focus-visible{color:var(--g2)}
+
+/* Homepage support teaser (between features and join) */
+.support-teaser{max-width:720px;margin:0 auto 8px;padding:36px 22px 40px;text-align:center;border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(57,255,106,.07),rgba(3,8,5,.35))}
+.support-teaser h2{font-family:Georgia,serif;font-variant:small-caps;font-weight:400;font-size:clamp(1.5rem,6vw,2rem);color:#eafff0;text-shadow:0 0 14px rgba(57,255,106,.4)}
+.support-teaser>p{color:var(--dim);margin:10px auto 0;max-width:34em;font-size:.98rem}
+.support-teaser-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px}
+.support-teaser .cta{margin-top:0}
+.cta.secondary{border-color:var(--line);color:var(--dim);background:rgba(3,8,5,.45);box-shadow:none;font-weight:600}
+.cta.secondary:hover,.cta.secondary:focus-visible{color:var(--g);border-color:var(--g);background:rgba(57,255,106,.08);box-shadow:0 0 18px rgba(57,255,106,.2)}
