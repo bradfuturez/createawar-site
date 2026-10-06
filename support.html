@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Support CreateAWar — Public Funds Ledger</title>
+<meta name="description" content="Support CreateAWar development via Ko-fi. Transparent public ledger of donations and spending. We never see your card numbers.">
+<meta name="theme-color" content="#030805">
+<link rel="canonical" href="https://createawar.com/support.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CreateAWar">
+<meta property="og:url" content="https://createawar.com/support.html">
+<meta property="og:title" content="Support CreateAWar — Public Funds Ledger">
+<meta property="og:description" content="Donations speed game development. Payments via Ko-fi. Every dollar is logged in a public ledger.">
+<meta property="og:image" content="https://bradfuturez.github.io/createawar-site/img/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Support CreateAWar — Public Funds Ledger">
+<meta name="twitter:description" content="Donations speed game development. Payments via Ko-fi. Every dollar is logged in a public ledger.">
+<meta name="twitter:image" content="https://bradfuturez.github.io/createawar-site/img/og.jpg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; form-action 'self'">
+<link rel="stylesheet" href="styles.css?v=support1">
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<header class="topnav">
+  <a class="brand" href="./">CreateAWar</a>
+  <nav aria-label="Site">
+    <a href="./">Home</a>
+    <a href="support.html" aria-current="page">Support</a>
+  </nav>
+</header>
+<main class="support">
+  <section class="support-hero">
+    <p class="kicker"><span class="dot"></span> Transparent funds</p>
+    <h1>Support CreateAWar</h1>
+    <p class="lede">Donations speed game development — art, tools, testing, and the time it takes to ship a real mobile war game. Every dollar in and out is listed below. No invented totals.</p>
+    <a class="cta kofi-cta" id="kofi-link" href="https://ko-fi.com/createawar" rel="noopener noreferrer" target="_blank">Donate on Ko-fi</a>
+    <p class="kofi-note">Payments happen on <strong>Ko-fi</strong>. We never store card numbers on this site.</p>
+  </section>
+
+  <section class="totals" aria-label="Funds summary" id="totals">
+    <article>
+      <p class="tlabel">Donated</p>
+      <p class="tval" id="total-donated">$0.00</p>
+    </article>
+    <article>
+      <p class="tlabel">Spent</p>
+      <p class="tval" id="total-spent">$0.00</p>
+    </article>
+    <article>
+      <p class="tlabel">Remaining</p>
+      <p class="tval" id="total-remaining">$0.00</p>
+    </article>
+  </section>
+  <p class="ledger-updated" id="ledger-updated" hidden></p>
+
+  <section class="ledger" aria-labelledby="donations-h">
+    <h2 id="donations-h">Donations</h2>
+    <p class="sec-note">Public notes only. No names or emails.</p>
+    <div id="donations-list" class="ledger-list" role="list">
+      <p class="empty">No donations yet.</p>
+    </div>
+  </section>
+
+  <section class="ledger" aria-labelledby="spends-h">
+    <h2 id="spends-h">Spending</h2>
+    <p class="sec-note">What funds were used for, and why.</p>
+    <div id="spends-list" class="ledger-list" role="list">
+      <p class="empty">No spending recorded yet.</p>
+    </div>
+  </section>
+
+  <section class="trust" aria-labelledby="trust-h">
+    <h2 id="trust-h">Security &amp; trust</h2>
+    <ul>
+      <li><strong>HTTPS</strong> — this site is served over encrypted connections.</li>
+      <li><strong>Ko-fi handles payments</strong> — card details stay with Ko-fi / their processors. CreateAWar never sees card numbers.</li>
+      <li><strong>Public ledger</strong> — donations and spends are logged in an open JSON file anyone can inspect. Totals are summed from those entries, not invented.</li>
+    </ul>
+  </section>
+</main>
+<footer>
+  <p><a href="./">Home</a> · <a href="support.html">Support</a></p>
+  <p>© 2026 CreateAWar. All rights reserved.</p>
+</footer>
+<script>
+(function(){
+  function money(n){
+    var x=Number(n); if(!isFinite(x))x=0;
+    return '$'+x.toFixed(2);
+  }
+  function esc(s){
+    return String(s==null?'':s)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  }
+  function sum(arr,key){
+    var t=0; for(var i=0;i<arr.length;i++){ var v=Number(arr[i][key]); if(isFinite(v))t+=v; }
+    return t;
+  }
+  function renderDonations(list, el){
+    if(!list.length){ el.innerHTML='<p class="empty">No donations yet.</p>'; return; }
+    var h='';
+    for(var i=0;i<list.length;i++){
+      var d=list[i], note=d.note?('<p class="note">'+esc(d.note)+'</p>'):'';
+      h+='<article class="row" role="listitem"><div class="row-main"><time datetime="'+esc(d.date)+'">'+esc(d.date)+'</time><span class="amt">'+money(d.amount)+'</span></div>'+note+'</article>';
+    }
+    el.innerHTML=h;
+  }
+  function renderSpends(list, el){
+    if(!list.length){ el.innerHTML='<p class="empty">No spending recorded yet.</p>'; return; }
+    var h='';
+    for(var i=0;i<list.length;i++){
+      var s=list[i];
+      h+='<article class="row" role="listitem"><div class="row-main"><time datetime="'+esc(s.date)+'">'+esc(s.date)+'</time><span class="amt spend">'+money(s.amount)+'</span></div>'
+        +'<p class="what"><strong>'+esc(s.what||'')+'</strong></p>'
+        +(s.why?'<p class="why">'+esc(s.why)+'</p>':'')
+        +'</article>';
+    }
+    el.innerHTML=h;
+  }
+  fetch('data/funds-ledger.json',{cache:'no-store'})
+    .then(function(r){ if(!r.ok) throw 0; return r.json(); })
+    .then(function(data){
+      var donations=Array.isArray(data.donations)?data.donations:[];
+      var spends=Array.isArray(data.spends)?data.spends:[];
+      var donated=sum(donations,'amount');
+      var spent=sum(spends,'amount');
+      document.getElementById('total-donated').textContent=money(donated);
+      document.getElementById('total-spent').textContent=money(spent);
+      document.getElementById('total-remaining').textContent=money(donated-spent);
+      renderDonations(donations, document.getElementById('donations-list'));
+      renderSpends(spends, document.getElementById('spends-list'));
+      if(data.kofiUrl){
+        var a=document.getElementById('kofi-link');
+        a.href=data.kofiUrl;
+      }
+      if(data.lastUpdated){
+        var u=document.getElementById('ledger-updated');
+        u.hidden=false;
+        u.textContent='Ledger updated '+data.lastUpdated+(data.currency?' · '+data.currency:'');
+      }
+    })
+    .catch(function(){
+      document.getElementById('donations-list').innerHTML='<p class="empty err">Could not load the ledger. Please refresh.</p>';
+      document.getElementById('spends-list').innerHTML='';
+    });
+})();
+</script>
+</body>
+</html>

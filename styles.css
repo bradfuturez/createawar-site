@@ -65,3 +65,48 @@ footer{text-align:center;padding:26px 16px 36px;color:#5f7d66;font-size:.8rem}
 @keyframes glA{0%,86%,100%{clip-path:inset(100% 0 0 0);transform:none}88%{clip-path:inset(20% 0 55% 0);transform:translate(-3px,0)}92%{clip-path:inset(60% 0 10% 0);transform:translate(3px,0)}}
 @keyframes glB{0%,80%,100%{clip-path:inset(100% 0 0 0);transform:none}83%{clip-path:inset(45% 0 30% 0);transform:translate(3px,0)}87%{clip-path:inset(5% 0 75% 0);transform:translate(-2px,0)}}
 @media (prefers-reduced-motion:reduce){.evolve .gl::before,.evolve .gl::after{animation:none;display:none}}
+
+/* —— Support / funds —— */
+.topnav{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line);position:relative;z-index:1}
+.topnav .brand{font-family:Georgia,serif;font-variant:small-caps;color:#eafff0;text-decoration:none;letter-spacing:.04em;font-size:1.15rem;text-shadow:0 0 12px rgba(57,255,106,.35)}
+.topnav nav{display:flex;gap:18px}
+.topnav nav a{color:var(--dim);text-decoration:none;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase}
+.topnav nav a:hover,.topnav nav a:focus-visible,.topnav nav a[aria-current=page]{color:var(--g)}
+.support{max-width:720px;margin:0 auto;padding:28px 20px 48px}
+.support-hero{text-align:center;padding-bottom:28px}
+.support-hero h1{font-family:"Cinzel","Trajan Pro",Georgia,"Times New Roman",serif;font-variant:small-caps;font-weight:400;font-size:clamp(2rem,9vw,3.2rem);line-height:1.1;letter-spacing:.02em;margin:16px 0 12px;color:#eafff0;text-shadow:0 0 18px rgba(57,255,106,.55),0 0 42px rgba(57,255,106,.25)}
+.support-hero .lede{color:var(--dim);max-width:36em;margin:0 auto;font-size:1.02rem}
+.kofi-cta{margin-top:24px}
+.kofi-note{margin-top:14px;color:var(--dim);font-size:.88rem}
+.kofi-note strong{color:var(--g)}
+.totals{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0 10px}
+.totals article{border:1px solid var(--line);background:linear-gradient(180deg,rgba(57,255,106,.07),rgba(3,8,5,.65));border-radius:4px;padding:16px 10px;text-align:center}
+.totals .tlabel{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--g)}
+.totals .tval{font-size:clamp(1.15rem,4.5vw,1.55rem);font-weight:700;color:#eafff0;margin-top:4px;font-variant-numeric:tabular-nums}
+.ledger-updated{text-align:center;color:#5f7d66;font-size:.8rem;margin-bottom:28px}
+.ledger{margin-bottom:32px}
+.ledger h2,.trust h2{font-family:Georgia,serif;font-variant:small-caps;font-weight:400;font-size:1.45rem;color:#eafff0;text-shadow:0 0 12px rgba(57,255,106,.35)}
+.sec-note{color:#5f7d66;font-size:.88rem;margin:4px 0 12px}
+.ledger-list{display:flex;flex-direction:column;gap:10px}
+.ledger-list .empty{border:1px dashed var(--line);border-radius:4px;padding:22px 16px;text-align:center;color:var(--dim);background:rgba(3,8,5,.4)}
+.ledger-list .empty.err{color:#ff8a8a;border-color:rgba(255,138,138,.35)}
+.ledger-list .row{border:1px solid var(--line);border-radius:4px;padding:14px 16px;background:linear-gradient(180deg,rgba(57,255,106,.04),rgba(3,8,5,.55))}
+.row-main{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.row-main time{color:var(--dim);font-size:.9rem;font-variant-numeric:tabular-nums}
+.row-main .amt{color:var(--g2);font-weight:700;font-variant-numeric:tabular-nums}
+.row-main .amt.spend{color:#ffc978}
+.row .note,.row .why{margin-top:6px;color:var(--dim);font-size:.92rem}
+.row .what{margin-top:6px;color:var(--txt);font-size:.95rem}
+.trust{border-top:1px solid var(--line);padding-top:28px}
+.trust ul{margin:12px 0 0;padding-left:1.15em;color:var(--dim)}
+.trust li{margin-bottom:10px}
+.trust strong{color:var(--txt)}
+footer a{color:#7a9a82;text-decoration:none}
+footer a:hover,footer a:focus-visible{color:var(--g)}
+@media (max-width:420px){
+  .totals{grid-template-columns:1fr;gap:8px}
+  .totals .tval{font-size:1.35rem}
+}
+
+.join .support-link a{color:var(--g);text-decoration:underline;text-underline-offset:3px}
+.join .support-link a:hover,.join .support-link a:focus-visible{color:var(--g2)}
