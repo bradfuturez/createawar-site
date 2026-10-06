@@ -25,11 +25,18 @@
 <link rel="manifest" href="site.webmanifest">
 <link rel="preload" as="image" type="image/webp" imagesrcset="img/hero-top-480.webp 480w, img/hero-top-768.webp 768w" imagesizes="100vw" media="(max-width: 899px)" fetchpriority="high">
 <link rel="preload" as="image" type="image/webp" href="img/hero-768.webp" media="(min-width: 900px)" fetchpriority="high">
-<link rel="stylesheet" href="styles.css?v=evolve2">
+<link rel="stylesheet" href="styles.css?v=support1">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"CreateAWar","url":"https://createawar.com/","image":"https://bradfuturez.github.io/createawar-site/img/og.jpg","description":"A mobile strategy war game. Play as a Bio-Hacker, create your army and leaders, and claim territory.","gamePlatform":["iOS","Android"],"genre":["Strategy"]}</script>
 </head>
 <body>
 <div class="grain" aria-hidden="true"></div>
+<header class="topnav">
+  <a class="brand" href="./">CreateAWar</a>
+  <nav aria-label="Site">
+    <a href="./" aria-current="page">Home</a>
+    <a href="support.html">Support</a>
+  </nav>
+</header>
 <main>
   <section class="hero">
     <picture class="art">
@@ -87,9 +94,11 @@
     </form>
     <p id="msg" class="msg" role="status" aria-live="polite"></p>
     <p class="stores">Coming to the <strong>App Store</strong> and <strong>Google Play</strong>.</p>
+    <p class="stores support-link">Want to speed development? <a href="support.html">Support CreateAWar</a> — transparent public ledger.</p>
   </section>
 </main>
 <footer>
+  <p><a href="./">Home</a> · <a href="support.html">Support</a></p>
   <p>© 2026 CreateAWar. All rights reserved.</p>
 </footer>
 <script>
