@@ -22,7 +22,7 @@
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="site.webmanifest">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self'; form-action 'self'">
 <link rel="stylesheet" href="styles.css?v=support2">
 </head>
 <body>
@@ -136,7 +136,7 @@
       document.getElementById('total-remaining').textContent=money(donated-spent);
       renderDonations(donations, document.getElementById('donations-list'));
       renderSpends(spends, document.getElementById('spends-list'));
-      if(data.kofiUrl){
+      if(typeof data.kofiUrl==='string'&&data.kofiUrl.indexOf('https://ko-fi.com/')===0){
         var a=document.getElementById('kofi-link');
         a.href=data.kofiUrl;
       }

@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; img-src 'self' data:; media-src 'self'; font-src 'self'; manifest-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline'; connect-src 'self' https://ep-flat-bread-b8zqe08j.neonauth.c-14.us-east-1.aws.neon.tech https://ep-flat-bread-b8zqe08j.apirest.c-14.us-east-1.aws.neon.tech; form-action 'self'">
 <title>CreateAWar — Play as a Bio-Hacker. Coming to iOS &amp; Android.</title>
 <meta name="description" content="CreateAWar: a mobile strategy war game. Play as a Bio-Hacker, grow your army and leaders in the Bio-Lab, and claim territory. Coming soon to iOS and Android.">
 <meta name="theme-color" content="#030805">
@@ -139,8 +140,13 @@
       return fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Prefer':'return=minimal','Authorization':'Bearer '+t.token},
         body:JSON.stringify({email:email,source:location.hostname.slice(0,100),user_agent:navigator.userAgent.slice(0,300)})});
     }).then(function(r){
-      if(r.ok||r.status===409){say("You're on the list. Welcome, Bio-Hacker.",'ok');f.reset();}
-      else if(r.status===400){say('Please enter a valid email address.','err');}
+      if(r.ok){return {ok:1};}
+      return r.json().catch(function(){return {};}).then(function(j){j=j||{};j.status=r.status;return j;});
+    }).then(function(j){
+      var code=String(j.code||''),txt=String((j.message||'')+' '+(j.hint||'')+' '+(j.details||'')).toLowerCase();
+      if(j.ok||j.status===409||code==='23505'){say("You're on the list. Welcome, Bio-Hacker.",'ok');f.reset();}
+      else if(j.status===429||code==='PT429'||txt.indexOf('rate_limited')>-1){say("Lots of Bio-Hackers are signing up right now. Please try again in a minute.",'err');}
+      else if(j.status===400||code==='23514'||code==='22001'){say('That email address doesn\u2019t look right. Please check it and try again.','err');f.email.focus();}
       else{throw 0;}
     }).catch(function(){say('Something went wrong. Please try again in a moment.','err');})
     .finally(function(){b.disabled=false;b.textContent='Notify me';});
