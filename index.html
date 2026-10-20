@@ -190,36 +190,44 @@
 </script>
 
 <style>
-.jls-brand{position:relative;overflow:hidden;background:#070708;background-image:radial-gradient(120% 90% at 50% 0%,#141416 0%,#070708 55%);padding:16vh 16px 13vh;text-align:center}
+.jls-brand{position:relative;overflow:hidden;--burn:0;background:#070708;background-image:radial-gradient(120% 90% at 50% 0%,#141416 0%,#070708 55%);padding:16vh 16px 13vh;text-align:center}
 .jls-brand canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
-.jls-word{position:relative;display:inline-block;font-family:Georgia,'Palatino Linotype','Book Antiqua','Times New Roman',serif;font-weight:700;font-size:clamp(58px,13.5vw,208px);letter-spacing:.06em;line-height:1.08;--burn:0}
+.jls-word{position:relative;display:inline-block;max-width:100%;font-family:Georgia,'Palatino Linotype','Book Antiqua','Times New Roman',serif;font-weight:700;font-size:clamp(44px,12.3vw,200px);letter-spacing:.045em;line-height:1.08}
 .jls-layer{display:block;white-space:nowrap}
-.jls-ash{color:#232327;text-shadow:0 1px 0 #34343a,0 0 22px rgba(0,0,0,.9)}
-.jls-fire{position:absolute;inset:0;background:linear-gradient(178deg,#fff3c4 0%,#ffd76a 22%,#ff9a2e 48%,#ff5f1f 68%,#c81e06 88%,#6d0d02 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 14px rgba(255,110,25,.55)) drop-shadow(0 0 44px rgba(255,60,10,.28));clip-path:inset(-30% calc((1 - var(--burn))*50%) -30% calc((1 - var(--burn))*50%))}
-.jls-edge{position:absolute;top:-14%;bottom:-14%;width:11%;pointer-events:none;opacity:var(--burn);background:radial-gradient(50% 50% at 50% 50%,rgba(255,230,170,.95) 0%,rgba(255,140,40,.65) 38%,rgba(255,70,10,.22) 62%,rgba(255,60,5,0) 78%);filter:blur(5px)}
-.jls-edge-l{left:calc(50% - var(--burn)*50% - 5.5%)}
-.jls-edge-r{left:calc(50% + var(--burn)*50% - 5.5%)}
-.jls-glow{position:absolute;left:50%;top:50%;width:120%;padding-top:60%;transform:translate(-50%,-50%);background:radial-gradient(50% 50% at 50% 50%,rgba(255,90,20,.20) 0%,rgba(255,90,20,0) 65%);opacity:var(--burn);pointer-events:none}
+.jls-ash{color:#262320;text-shadow:0 1px 0 #38322c,0 0 22px rgba(0,0,0,.9)}
+.jls-fireblur{position:absolute;inset:0;color:#ff7a1a;filter:blur(16px);clip-path:inset(-30% calc((1 - var(--burn))*50%) -30% calc((1 - var(--burn))*50%));animation:jlsflick 2.6s ease-in-out infinite alternate}
+.jls-fire{position:absolute;inset:0;background:linear-gradient(178deg,#fff3c4 0%,#ffd76a 22%,#ff9a2e 48%,#ff5f1f 68%,#c81e06 88%,#6d0d02 100%);-webkit-background-clip:text;background-clip:text;color:transparent;clip-path:inset(-30% calc((1 - var(--burn))*50%) -30% calc((1 - var(--burn))*50%))}
+@keyframes jlsflick{from{opacity:.5}to{opacity:.85}}
+.jls-edge{position:absolute;top:-14%;bottom:-14%;width:13%;pointer-events:none;opacity:calc(var(--burn)*.75);background:radial-gradient(50% 50% at 50% 50%,rgba(255,230,170,.9) 0%,rgba(255,140,40,.55) 38%,rgba(255,70,10,.18) 62%,rgba(255,60,5,0) 78%);filter:blur(9px)}
+.jls-edge-l{left:calc(50% - var(--burn)*50% - 6.5%)}
+.jls-edge-r{left:calc(50% + var(--burn)*50% - 6.5%)}
+.jls-sub{position:relative;display:block;margin-top:3vh;font-family:Georgia,'Palatino Linotype',serif;font-weight:700;font-size:clamp(14px,3.3vw,32px);letter-spacing:.58em;text-indent:.58em;line-height:1.2}
+.jls-sub .jls-fireblur{filter:blur(9px)}
 .jls-line{margin:4.5vh auto 0;width:min(420px,60vw);height:1px;background:linear-gradient(90deg,transparent,rgba(255,140,50,.55),transparent);opacity:var(--burn)}
-.jls-copy{position:relative;margin-top:2.2vh;font-family:Georgia,serif;font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:#5c5c64}
-@media (prefers-reduced-motion: reduce){.jls-word{--burn:1}}
+.jls-copy{position:relative;margin-top:2.2vh;font-family:Georgia,serif;font-size:11px;letter-spacing:.34em;text-transform:uppercase;color:#5c5c64}
+@media (prefers-reduced-motion: reduce){.jls-brand{--burn:1}.jls-fireblur{animation:none;opacity:.8}}
 </style>
-<section class="jls-brand" id="jlsBrand" aria-label="JaLooSia">
+<section class="jls-brand" id="jlsBrand" aria-label="JaLooSia Gaming Studios">
   <canvas id="jlsEmbers"></canvas>
   <div class="jls-word" id="jlsWord">
-    <span class="jls-glow"></span>
     <span class="jls-layer jls-ash">JaLooSia</span>
+    <span class="jls-layer jls-fireblur">JaLooSia</span>
     <span class="jls-layer jls-fire">JaLooSia</span>
     <span class="jls-edge jls-edge-l"></span>
     <span class="jls-edge jls-edge-r"></span>
   </div>
+  <div class="jls-sub" id="jlsSub">
+    <span class="jls-layer jls-ash">GAMING STUDIOS</span>
+    <span class="jls-layer jls-fireblur">GAMING STUDIOS</span>
+    <span class="jls-layer jls-fire">GAMING STUDIOS</span>
+  </div>
   <div class="jls-line"></div>
-  <div class="jls-copy">&copy; 2026 JaLooSia</div>
+  <div class="jls-copy">&copy; 2026 JaLooSia Gaming Studios</div>
 </section>
 <script>
 (function(){
-  var sec=document.getElementById('jlsBrand'),word=document.getElementById('jlsWord'),cv=document.getElementById('jlsEmbers');
-  if(!sec||!word||!cv)return;
+  var sec=document.getElementById('jlsBrand'),cv=document.getElementById('jlsEmbers');
+  if(!sec||!cv)return;
   var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   var burn=reduced?1:0,target=burn;
   function measure(){
@@ -240,7 +248,7 @@
   function tick(){
     burn+=(target-burn)*0.07;
     if(Math.abs(target-burn)<0.001)burn=target;
-    word.style.setProperty('--burn',burn.toFixed(4));
+    sec.style.setProperty('--burn',burn.toFixed(4));
     x.clearRect(0,0,W,H);
     var want=Math.round(burn*70);
     for(var i=0;i<want&&parts.length<130;i++)if(Math.random()<0.5)spawn();
@@ -254,7 +262,7 @@
   }
   addEventListener('scroll',measure,{passive:true});addEventListener('resize',function(){size();measure();});
   size();measure();
-  if(reduced){word.style.setProperty('--burn',1);for(var i=0;i<50;i++)spawn();tick&&0;}
+  if(reduced){sec.style.setProperty('--burn',1);}
   else requestAnimationFrame(tick);
 })();
 </script>
