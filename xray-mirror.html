@@ -656,6 +656,19 @@ function renderFrame(now, faceLms, hands, sides) {
 
 // ------------------------------ start-up ------------------------------
 let faceTracker = null, handTracker = null;
+// PATCH 2026-11-11 (Brainy, for Brad): faceFactory + rebuildFaceTracker let
+// the live loop rebuild a face tracker whose MediaPipe graph has died on the
+// face-geometry error described in liveLoop below.
+let faceFactory = null, faceRebuildBusy = false;
+async function rebuildFaceTracker() {
+  if (!faceFactory || faceRebuildBusy) return;
+  faceRebuildBusy = true;
+  const old = faceTracker; faceTracker = null;
+  try { if (old) old.close(); } catch (e) { /* already dead is fine */ }
+  try { faceTracker = await faceFactory("GPU"); }
+  catch (e) { try { faceTracker = await faceFactory("CPU"); } catch (e2) { faceTracker = null; } }
+  faceRebuildBusy = false;
+}
 async function loadTrackers() {
   const vision = await import(MP + "/vision_bundle.mjs");
   const files = await vision.FilesetResolver.forVisionTasks(MP + "/wasm");
@@ -663,13 +676,14 @@ async function loadTrackers() {
     runningMode: "VIDEO", numFaces: 1, outputFacialTransformationMatrixes: true, outputFaceBlendshapes: true });
   const mkHand = d => vision.HandLandmarker.createFromOptions(files, { baseOptions: { modelAssetPath: HAND_MODEL, delegate: d },
     runningMode: "VIDEO", numHands: 2 });
+  faceFactory = mkFace;   // PATCH 2026-11-11: lets the live loop rebuild the face tracker (see rebuildFaceTracker)
   try { faceTracker = await mkFace("GPU"); } catch (e) { faceTracker = await mkFace("CPU"); }
   try { try { handTracker = await mkHand("GPU"); } catch (e) { handTracker = await mkHand("CPU"); } }
   catch (e) { handTracker = null; }                        // the head view still works without hand tracking
 }
 
 function liveLoop() {
-  let lastTime = -1, lostAt = 0, said = "";
+  let lastTime = -1, lostAt = 0, said = "", geoStreak = 0;
   const say = (t, c) => { if (said !== t) { said = t; setStatus(t, c); } };
   function tick() {
     requestAnimationFrame(tick);
@@ -678,15 +692,18 @@ function liveLoop() {
     const now = performance.now();
     let faceLms = null, hands = [], sides = [];
     try {
-      const fr = faceTracker.detectForVideo(video, now);
-      faceLms = fr.faceLandmarks && fr.faceLandmarks[0];
-      const mat = fr.facialTransformationMatrixes && fr.facialTransformationMatrixes[0];
-      if (faceLms && mat) {
-        let jaw = 0;
-        const bs = fr.faceBlendshapes && fr.faceBlendshapes[0];
-        if (bs) for (const c of bs.categories) if (c.categoryName === "jawOpen") jaw = c.score;
-        updateHead(mat.data, faceLms, jaw); lostAt = 0;
-      } else { faceLms = null; if (!lostAt) lostAt = now; if (now - lostAt > 250) head.found = false; }
+      if (faceTracker) {                                 // PATCH 2026-11-11: null while a rebuild is in flight — skip this frame's face step
+        const fr = faceTracker.detectForVideo(video, now);
+        geoStreak = 0;                                   // PATCH 2026-11-11: a frame that detects cleanly clears the geometry-error streak
+        faceLms = fr.faceLandmarks && fr.faceLandmarks[0];
+        const mat = fr.facialTransformationMatrixes && fr.facialTransformationMatrixes[0];
+        if (faceLms && mat) {
+          let jaw = 0;
+          const bs = fr.faceBlendshapes && fr.faceBlendshapes[0];
+          if (bs) for (const c of bs.categories) if (c.categoryName === "jawOpen") jaw = c.score;
+          updateHead(mat.data, faceLms, jaw); lostAt = 0;
+        } else { faceLms = null; if (!lostAt) lostAt = now; if (now - lostAt > 250) head.found = false; }
+      } else { if (!lostAt) lostAt = now; if (now - lostAt > 250) head.found = false; }
       if (handTracker && (S.hands || S.reveal === "lens" || S.showdata)) {
         const hr = handTracker.detectForVideo(video, now);
         hands = hr.landmarks || [];
@@ -694,7 +711,22 @@ function liveLoop() {
         // The tracker names hands as if the picture were mirrored; ours is not, so the names are swapped.
         sides = hands.map((h, i) => !!(hd[i] && hd[i][0] && hd[i][0].categoryName === "Left"));
       }
-    } catch (e) { say("The tracker hit an error: " + e.message, "bad"); return; }
+    } catch (e) {
+      // PATCH 2026-11-11 (Brainy, for Brad): MediaPipe's face-geometry step
+      // (the head-pose solver behind facialTransformationMatrixes) throws
+      // "Design matrix norm is too small / Failed to solve the WEOP problem"
+      // when a frame's landmarks come out degenerate — warmup frames, a face
+      // half out of frame, bad light. The throw escapes detectForVideo, and
+      // once the graph has failed this way it keeps failing on later frames,
+      // so the old one-line handler left the red error up and tracking never
+      // started. Treat that class as a skipped frame: keep the loop alive,
+      // and if it keeps happening, rebuild the face tracker (fresh graph).
+      const m = e && e.message || "";
+      if (/face_geometry|Design matrix|WEOP|canonical-to-runtime/.test(m)) {
+        if (++geoStreak >= 45) { geoStreak = 0; rebuildFaceTracker(); }
+      } else say("The tracker hit an error: " + e.message, "bad");
+      return;
+    }
     say(head.found ? "Tracking your head." + (hands.length ? " Hand bones on." : "")
                    : hands.length ? "Hand found. Face the camera to see inside your head."
                    : "No face found. Face the camera, with light on your face.", head.found || hands.length ? "ok" : "bad");
